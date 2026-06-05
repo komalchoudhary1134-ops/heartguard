@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://heartguard-odba.onrender.com/api';
 
 // Helper function for API calls
 const apiCall = async (endpoint, method = 'GET', data = null, token = null) => {

@@ -17,23 +17,31 @@ dbConnect();
 
 const app = express();
 
-// CORS Configuration
-app.use(cors());
+// ✅ UPDATED CORS Configuration - Vercel Frontend Allow
+app.use(cors({
+    origin: [
+        'https://heartguard-tzol.vercel.app',
+        'https://heartguard-tzol-git-main-komal-s-projects6.vercel.app',
+        'http://localhost:3000'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
-// API Routes (pehle rakhna important hai)
+// API Routes
 app.use("/api", authRoutes);
 app.use("/api", readingRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", healthRoutes);
 
-// ✅ Serve React Frontend (YE NAYA CODE HAI - API routes ke BAAD)
-app.use(express.static(path.join(__dirname, '../bp-app/build')));
-
-// ✅ All non-API routes go to React (YE BHI NAYA HAI)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../bp-app/build', 'index.html'));
-});
+// ❌ REMOVED - Frontend static serving (ab Vercel pe hai)
+// app.use(express.static(path.join(__dirname, '../bp-app/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../bp-app/build', 'index.html'));
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
