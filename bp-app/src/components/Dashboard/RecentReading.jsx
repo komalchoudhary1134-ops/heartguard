@@ -118,19 +118,19 @@ const RecentReadings = ({ readings, onDelete }) => {
           return (
             <div key={readingId} style={styles.readingCard}>
               <div style={styles.cardRow}>
-                <span style={styles.cardLabel}>📅 Date</span>
+                <span style={styles.cardLabel}> Date</span>
                 <span style={styles.cardValue}>{new Date(r.date).toLocaleString()}</span>
               </div>
               <div style={styles.cardRow}>
-                <span style={styles.cardLabel}>💓 BP Reading</span>
+                <span style={styles.cardLabel}> BP Reading</span>
                 <span style={styles.cardValue}>{r.systolic}/{r.diastolic} mmHg</span>
               </div>
               <div style={styles.cardRow}>
-                <span style={styles.cardLabel}>❤️ Heart Rate</span>
+                <span style={styles.cardLabel}> Heart Rate</span>
                 <span style={styles.cardValue}>{r.heartRate || '-'} BPM</span>
               </div>
               <div style={styles.cardRow}>
-                <span style={styles.cardLabel}>📊 Status</span>
+                <span style={styles.cardLabel}> Status</span>
                 <span style={{ ...styles.statusBadge, background: `${statusColor}20`, color: statusColor }}>
                   {r.status || 'Normal'}
                 </span>
