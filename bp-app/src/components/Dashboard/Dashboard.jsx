@@ -13,6 +13,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
 
+  // Check screen size for responsive layout
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const isSmallMobile = typeof window !== 'undefined' && window.innerWidth <= 480;
+
   useEffect(() => {
     loadData();
   }, []);
@@ -85,25 +89,68 @@ const Dashboard = () => {
     { icon: 'fas fa-flag-checkered', label: 'Total Readings', value: stats.total || 0, sub: 'Total' }
   ];
 
+  // Responsive styles
+  const styles = {
+    loadingContainer: {
+      padding: isSmallMobile ? '1rem' : '2rem',
+      textAlign: 'center',
+      fontSize: isSmallMobile ? '0.85rem' : '1rem'
+    },
+    topBar: {
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      justifyContent: 'space-between',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      gap: isMobile ? '0.5rem' : '0',
+      marginBottom: isMobile ? '1rem' : '1.5rem',
+      padding: isSmallMobile ? '0.5rem' : '0'
+    },
+    title: {
+      fontSize: isSmallMobile ? '1.2rem' : (isMobile ? '1.3rem' : '1.5rem'),
+      margin: 0
+    },
+    userInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontSize: isSmallMobile ? '0.85rem' : '0.9rem',
+      background: isMobile ? '#f3f4f6' : 'transparent',
+      padding: isMobile ? '0.3rem 0.8rem' : '0',
+      borderRadius: '20px'
+    },
+    statsGrid: {
+      display: 'grid',
+      gridTemplateColumns: isSmallMobile ? 'repeat(2, 1fr)' : (isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)'),
+      gap: isSmallMobile ? '0.8rem' : (isMobile ? '1rem' : '1.5rem'),
+      marginBottom: isMobile ? '1rem' : '1.5rem'
+    },
+    trackerSection: {
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+      gap: isMobile ? '1rem' : '1.5rem',
+      marginBottom: isMobile ? '1rem' : '1.5rem'
+    }
+  };
+
   if (loading) {
-    return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading dashboard...</div>;
+    return <div style={styles.loadingContainer}>Loading dashboard...</div>;
   }
 
   return (
     <div>
-      <div className="top-bar">
-        <h1>Blood Pressure Tracker</h1>
-        <div className="user-info">
+      <div className="top-bar" style={styles.topBar}>
+        <h1 style={styles.title}>Blood Pressure Tracker</h1>
+        <div className="user-info" style={styles.userInfo}>
           <span>{user?.name?.split(' ')[0] || 'Guest'}</span>
           <i className="fas fa-user-circle"></i>
         </div>
       </div>
 
-      <div className="stats-grid">
+      <div className="stats-grid" style={styles.statsGrid}>
         {statCards.map((card, i) => <StatsCard key={i} {...card} />)}
       </div>
 
-      <div className="tracker-section">
+      <div className="tracker-section" style={styles.trackerSection}>
         <AddReading onAdd={addReading} />
         <BPChart readings={readings} />
       </div>
