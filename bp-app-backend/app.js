@@ -17,11 +17,12 @@ dbConnect();
 
 const app = express();
 
-// ✅ UPDATED CORS Configuration - Vercel Frontend Allow
+// ✅ UPDATED CORS Configuration - New Vercel Frontend Allow
 app.use(cors({
     origin: [
-        'https://heartguard-tzol.vercel.app',
-        'https://heartguard-tzol-git-main-komal-s-projects6.vercel.app',
+        'https://heartguard-xi.vercel.app',
+        'https://heartguard-cq9bpgfvi-komal-s-projects6.vercel.app',
+        'https://heartguard.vercel.app',
         'http://localhost:3000'
     ],
     credentials: true,
@@ -36,12 +37,6 @@ app.use("/api", authRoutes);
 app.use("/api", readingRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", healthRoutes);
-
-// ❌ REMOVED - Frontend static serving (ab Vercel pe hai)
-// app.use(express.static(path.join(__dirname, '../bp-app/build')));
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../bp-app/build', 'index.html'));
-// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
