@@ -6,15 +6,21 @@ const BPChart = ({ readings }) => {
   const chartInstance = useRef(null);
 
   // Check screen size for responsive adjustments
-  const isMobile = window.innerWidth <= 768;
-  const isSmallMobile = window.innerWidth <= 480;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const isSmallMobile = typeof window !== 'undefined' && window.innerWidth <= 480;
 
   useEffect(() => {
+    // ✅ FIX: Check if canvas exists and readings exist
+    if (!chartRef.current) return;
+    if (!readings || readings.length === 0) return;
+    
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
     
     const ctx = chartRef.current.getContext('2d');
+    if (!ctx) return;
+    
     const last7Days = readings.slice(0, 7).reverse();
     
     // Responsive chart options
@@ -138,9 +144,10 @@ const BPChart = ({ readings }) => {
     minHeight: isSmallMobile ? '250px' : (isMobile ? '300px' : '400px')
   };
 
-  return (
-    <div className="chart-container" style={containerStyles}>
-      {readings.length === 0 ? (
+  // ✅ FIX: Check if readings exist before trying to show chart
+  if (!readings || readings.length === 0) {
+    return (
+      <div className="chart-container" style={containerStyles}>
         <div style={{ 
           textAlign: 'center', 
           padding: '2rem', 
@@ -150,9 +157,13 @@ const BPChart = ({ readings }) => {
           <i className="fas fa-chart-line" style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'block' }}></i>
           No data available. Add your first reading to see the chart!
         </div>
-      ) : (
-        <canvas ref={chartRef} style={canvasStyles}></canvas>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="chart-container" style={containerStyles}>
+      <canvas ref={chartRef} style={canvasStyles}></canvas>
     </div>
   );
 };
